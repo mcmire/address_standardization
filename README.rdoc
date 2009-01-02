@@ -1,0 +1,50 @@
+= address_standardization
+
+== Summary
+
+A tiny Ruby library to quickly standardize a postal address. Right now this supportsMelissaData, but it's soon to support USPS.
+
+== Installation
+
+Put this in your environment.rb:
+
+  config.gem 'mcmire-address_standardization', :lib => "address_standardization", :source => "http://gems.github.com"
+
+Then run <tt>rake gems:install</tt> to install the gem.
+
+== Usage
+
+Here's how to standardize a US address:
+
+  AddressStandardization::Melissa::USAddress.standardize(
+    :street => "1000 Corporate Centre Dr.",
+    :city => "Franklin",
+    :state => "TN"
+  )
+  
+This will attempt to look up the address in {MelissaData's public lookup form}[http://www.melissadata.com/lookups/addressverify.asp]. If the address checks out, you'll get back a AddressStandardization::Melissa::USAddress instance. Otherwise, you'll get back +nil+. In this case we get:
+  
+  #<AddressStandardization::Melissa::USAddress:0x18bf9c4 @address_info={"city"=>"FRANKLIN", "zip"=>"37067-2611", "street"=>"1000 CORPORATE CENTRE DR", "state"=>"TN"}>
+
+If you store the instance, you can refer to the individual fields like so:
+
+  addr.street   #=> "1000 CORPORATE CENTRE DR"
+  address.city  #=> "FRANKLIN"
+  address.state #=> "TN"
+  address.zip   #=> "37067-2611"
+
+Standardizing a Canadian address works the same way:
+
+  AddressStandardization::Melissa::CanadianAddress.standardize(
+    :street => "103 Metig St",
+    :city => "Sault Ste Marie",
+    :province => "ON"
+  )
+
+Here's what you should get back:
+
+  #<AddressStandardization::Melissa::CanadianAddress:0x18300f8 @address_info={"city"=>"SAULT STE MARIE", "postalcode"=>"P6A 5K9", "street"=>"103 METIG ST RR 4", "province"=>"ON"}>
+
+== Author
+
+(c) 2008 Elliot Winkler (elliot dot winkler at gmail dot com). Released under the MIT license.
