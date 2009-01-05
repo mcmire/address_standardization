@@ -4,7 +4,7 @@ module AddressStandardization
   class AbstractAddress
     
     include ClassLevelInheritableAttributes
-    inheritable_attributes :valid_keys
+    cattr_inheritable :valid_keys
       
     def self.standardize
       raise NotImplementedError, "You must override .standardize in a subclass"

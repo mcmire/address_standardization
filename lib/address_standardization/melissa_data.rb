@@ -4,7 +4,7 @@ require 'mechanize'
 module AddressStandardization
   class MelissaData
     class BaseAddress < AbstractAddress
-      inheritable_attributes :start_url
+      cattr_inheritable :start_url
       
       def initialize(address_info)
         raise NotImplementedError, "You must define start_url" unless self.class.start_url
