@@ -38,3 +38,23 @@ task :github do
   File.open(file, 'w') {|f| f << spec.to_ruby }
   puts "Created gemspec: #{file}"
 end
+
+desc "Validates your gemspec like Github does"
+task :validate_gemspec do
+  require 'yaml'
+
+  file = File.dirname(__FILE__) + "/#{spec.name}.gemspec"
+  data = File.read(file)
+  spec = nil
+
+  if data !~ %r{!ruby/object:Gem::Specification}
+    Thread.new { spec = eval("$SAFE = 3\n#{data}") }.join
+  else
+    spec = YAML.load(data)
+  end
+
+  spec.validate
+
+  puts spec
+  puts "OK"
+end
