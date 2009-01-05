@@ -1,6 +1,16 @@
+require 'rubygems'
+require 'mechanize'
+
 module AddressStandardization
-  class Melissa
+  class MelissaData
     class BaseAddress < AbstractAddress
+      inheritable_attributes :start_url
+      
+      def initialize(address_info)
+        raise NotImplementedError, "You must define start_url" unless self.class.start_url
+        super(address_info)
+      end
+      
       class << self
       protected
         def standardize(address_info, action, attrs_to_fields)
@@ -24,7 +34,7 @@ module AddressStandardization
             street = strongs.first.inner_text
             strongs[1].search("a:gt(0)").remove
             city, state, zip = strongs[1].inner_html.strip_newlines.strip_html.split(/(?:&\w+;)+/)
-            fields = [ street, city, state, zip ]
+            fields = [ street.upcase, city.upcase, state.upcase, zip.upcase ]
           end
           fields
         end

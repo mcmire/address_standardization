@@ -4,7 +4,7 @@ module AddressStandardization
   class AbstractAddress
     
     include ClassLevelInheritableAttributes
-    inheritable_attributes :start_url, :valid_keys
+    inheritable_attributes :valid_keys
       
     def self.standardize
       raise NotImplementedError, "You must override .standardize in a subclass"
@@ -13,7 +13,6 @@ module AddressStandardization
     attr_reader :address_info
   
     def initialize(address_info)
-      raise NotImplementedError, "You must define start_url" unless self.class.start_url
       raise NotImplementedError, "You must define valid_keys" unless self.class.valid_keys
       raise ArgumentError, "No address given!" if address_info.empty?
       address_info = address_info.inject({}) {|h,(k,v)| h[k.to_s] = v; h }  # stringify keys
@@ -44,7 +43,7 @@ module AddressStandardization
     end
     
     def ==(other)
-      other.is_a?(AbstractAddress) && @address_info == other.address_info
+      other.kind_of?(AbstractAddress) && @address_info == other.address_info
     end
     
   private
@@ -53,7 +52,7 @@ module AddressStandardization
     end
     
     def standardize_value(value)
-      value ? value.upcase.strip_whitespace : ""
+      value ? value.strip_whitespace : ""
     end
   end
 end

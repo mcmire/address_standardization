@@ -2,7 +2,7 @@
 
 == Summary
 
-A tiny Ruby library to quickly standardize a postal address. Right now this supportsMelissaData, but it's soon to support USPS.
+A tiny Ruby library to quickly standardize a postal address. Right now this supports Google Maps and MelissaData.
 
 == Installation
 
@@ -14,36 +14,62 @@ Then run <tt>rake gems:install</tt> to install the gem.
 
 == Usage
 
-Here's how to standardize a US address:
+Right now there are two methods supported: MelissaData and Google Maps.
 
-  AddressStandardization::Melissa::USAddress.standardize(
-    :street => "1000 Corporate Centre Dr.",
-    :city => "Franklin",
-    :state => "TN"
+MelissaData provides two services: {US address lookup}[http://www.melissadata.com/lookups/AddressVerify.asp] and [Canadian address lookup]{http://www.melissadata.com/lookups/CanadianAddressVerify.asp}. They both work the same way, however. First, here's how to standardize a US address:
+
+  addr = AddressStandardization::MelissaData::USAddress.standardize(
+    :street => "1 Infinite Loop",
+    :city => "Cupertino",
+    :state => "CA"
   )
   
-This will attempt to look up the address in {MelissaData's public lookup form}[http://www.melissadata.com/lookups/addressverify.asp]. If the address checks out, you'll get back a AddressStandardization::Melissa::USAddress instance. Otherwise, you'll get back +nil+. In this case we get:
-  
-  #<AddressStandardization::Melissa::USAddress:0x18bf9c4 @address_info={"city"=>"FRANKLIN", "zip"=>"37067-2611", "street"=>"1000 CORPORATE CENTRE DR", "state"=>"TN"}>
+This submits the address to MelissaData. If the address can't be found, you'll get back +nil+. But if the address can be found (as in this case), you'll get an instance of <tt>AddressStandardization::MelissaData::USAddress</tt>. If you store the instance, you can refer to the individual fields like so:
 
-If you store the instance, you can refer to the individual fields like so:
+  addr.street  #=> "1 INFINITE LOOP"
+  addr.city    #=> "CUPERTINO"
+  addr.state   #=> "CA"
+  addr.zip     #=> "95014-2083"
 
-  addr.street   #=> "1000 CORPORATE CENTRE DR"
-  address.city  #=> "FRANKLIN"
-  address.state #=> "TN"
-  address.zip   #=> "37067-2611"
+And standardizing a Canadian address:
 
-Standardizing a Canadian address works the same way:
-
-  AddressStandardization::Melissa::CanadianAddress.standardize(
+  addr = AddressStandardization::MelissaData::CanadianAddress.standardize(
     :street => "103 Metig St",
     :city => "Sault Ste Marie",
     :province => "ON"
   )
+  addr.street      #=> "103 METIG ST RR 4"
+  addr.city        #=> "SAULT STE MARIE"
+  addr.province    #=> "ON"
+  addr.postalcode  #=> "P6A 5K9"
 
-Here's what you should get back:
+Using Google Maps to validate an address is just as easy:
 
-  #<AddressStandardization::Melissa::CanadianAddress:0x18300f8 @address_info={"city"=>"SAULT STE MARIE", "postalcode"=>"P6A 5K9", "street"=>"103 METIG ST RR 4", "province"=>"ON"}>
+  addr = AddressStandardization::GoogleMaps::Address.standardize(
+    :street => "1600 Amphitheatre Parkway",
+    :city => "Mountain View",
+    :state => "CA"
+  )
+  addr.street     #=> "1600 AMPHITHEATRE PKWY"
+  addr.city       #=> "MOUNTAIN VIEW"
+  addr.state      #=> "CA"
+  addr.zip        #=> "94043"
+  addr.country    #=> "USA"
+  
+And, again, a Canadian address:
+
+  addr = AddressStandardization::GoogleMaps::Address.standardize(
+    :street => "1770 Stenson Blvd.",
+    :city => "Peterborough",
+    :province => "ON"
+  )
+  addr.street      #=> "1770 STENSON BLVD"
+  addr.city        #=> "PETERBOROUGH"
+  addr.province    #=> "ON"
+  addr.postalcode  #=> "K9K"
+  addr.country     #=> "CANADA"
+
+You'll notice that for some reason, the Google Maps API doesn't return the full postal code for Canadian addresses. If you know why this is please let me know (my email address is below).
 
 == Author
 
