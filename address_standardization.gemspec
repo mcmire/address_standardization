@@ -2,14 +2,14 @@
 
 Gem::Specification.new do |s|
   s.name = %q{address_standardization}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Elliot Winkler"]
-  s.date = %q{2009-01-02}
+  s.date = %q{2009-01-05}
   s.email = %q{elliot.winkler@gmail.com}
   s.extra_rdoc_files = ["README.rdoc"]
-  s.files = ["README.rdoc", "Rakefile", "lib/address_standardization", "lib/address_standardization/abstract_address.rb", "lib/address_standardization/class_level_inheritable_attributes.rb", "lib/address_standardization/melissa.rb", "lib/address_standardization/ruby_ext.rb", "lib/address_standardization/version.rb", "lib/address_standardization.rb", "test/melissa_test.rb", "test/test_helper.rb"]
+  s.files = ["README.rdoc", "Rakefile", "lib/address_standardization", "lib/address_standardization/abstract_address.rb", "lib/address_standardization/class_level_inheritable_attributes.rb", "lib/address_standardization/google_maps.rb", "lib/address_standardization/melissa_data.rb", "lib/address_standardization/ruby_ext.rb", "lib/address_standardization/version.rb", "lib/address_standardization.rb", "test/google_maps_test.rb", "test/melissa_data_test.rb", "test/test.xml", "test/test_helper.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/mcmire/address_standardization}
   s.rdoc_options = ["--main", "README.rdoc"]

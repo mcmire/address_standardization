@@ -16,7 +16,7 @@ Then run <tt>rake gems:install</tt> to install the gem.
 
 Right now there are two methods supported: MelissaData and Google Maps.
 
-MelissaData provides two services: {US address lookup}[http://www.melissadata.com/lookups/AddressVerify.asp] and [Canadian address lookup]{http://www.melissadata.com/lookups/CanadianAddressVerify.asp}. They both work the same way, however. First, here's how to standardize a US address:
+MelissaData provides two services: {US address lookup}[http://www.melissadata.com/lookups/AddressVerify.asp] and {Canadian address lookup}[http://www.melissadata.com/lookups/CanadianAddressVerify.asp]. They both work the same way, however. First, here's how to standardize a US address:
 
   addr = AddressStandardization::MelissaData::USAddress.standardize(
     :street => "1 Infinite Loop",
