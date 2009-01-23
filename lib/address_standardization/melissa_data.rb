@@ -25,6 +25,10 @@ module AddressStandardization
               end
             end
             results_page = form.submit(form.buttons.first)
+            
+            puts "** Response **"
+            puts
+            puts results_page.body
 
             table = results_page.search("form")[2].next_sibling.next_sibling
             status_th = table.search(is_canada ? "td" : "th")[0]
