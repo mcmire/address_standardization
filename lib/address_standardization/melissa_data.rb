@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'mechanize'
 
 module AddressStandardization
@@ -26,9 +25,9 @@ module AddressStandardization
             end
             results_page = form.submit(form.buttons.first)
             
-            puts "** Response **"
-            puts
-            puts results_page.body
+            ##puts "** Response **"
+            ##puts
+            ##puts results_page.body
 
             table = results_page.search("table.Tableresultborder")[1]
             return unless table

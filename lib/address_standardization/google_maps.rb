@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'hpricot'
 
 module AddressStandardization
@@ -23,7 +22,7 @@ module AddressStandardization
             address_info[:zip]
           ].join(" ")
           url = "http://maps.google.com/maps/geo?q=#{address_str.url_escape}&output=xml&key=#{GoogleMaps.api_key}&oe=utf-8"
-          puts "Calling Google Maps URL: #{url}"
+          ##puts "Calling Google Maps URL: #{url}"
           uri = URI.parse(url)
           res = Net::HTTP.get_response(uri)
           unless res.is_a?(Net::HTTPSuccess)
