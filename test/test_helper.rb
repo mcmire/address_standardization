@@ -1,9 +1,9 @@
 # http://sneaq.net/textmate-wtf
-$LOAD_PATH.reject! { |e| e.include? 'TextMate' }
+#$LOAD_PATH.reject! { |e| e.include? 'TextMate' }
 
-dir = File.dirname(__FILE__)
-lib = dir + "/../lib"
-$LOAD_PATH.unshift(lib)
+#dir = File.dirname(__FILE__)
+#lib = dir + "/../lib"
+#$LOAD_PATH.unshift(lib)
 
 require 'rubygems'
 require 'context'

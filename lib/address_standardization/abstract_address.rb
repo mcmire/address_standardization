@@ -3,7 +3,7 @@ module AddressStandardization
   
   class AbstractAddress
     
-    include ClassLevelInheritableAttributes
+    extend ClassLevelInheritableAttributes
     cattr_inheritable :valid_keys
       
     def self.standardize

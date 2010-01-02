@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MelissaDataTest < Test::Unit::TestCase
-  test "Valid USA address" do
+  test "Valid US address" do
     addr = AddressStandardization::MelissaData::USAddress.standardize(
       :street => "1 Infinite Loop",
       :city => "Cupertino",
@@ -15,7 +15,7 @@ class MelissaDataTest < Test::Unit::TestCase
     )
   end
   
-  test "Invalid USA address" do
+  test "Invalid US address" do
     addr = AddressStandardization::MelissaData::USAddress.standardize(
       :street => "123 Imaginary Lane",
       :city => "Some Town",
@@ -26,15 +26,15 @@ class MelissaDataTest < Test::Unit::TestCase
   
   test "Valid Canadian address" do
     addr = AddressStandardization::MelissaData::CanadianAddress.standardize(
-      :street => "103 Metig St",
-      :city => "Sault Ste Marie",
+      :street => "3025 Clayhill Rd",
+      :city => "Mississauga",
       :province => "ON"
     )
     addr.should == AddressStandardization::MelissaData::CanadianAddress.new(
-      "street" => "103 METIG ST RR 4",
+      "street" => "3025 CLAYHILL RD",
       "province" => "ON",
-      "city" => "SAULT STE MARIE",
-      "postalcode" => "P6A 5K9"
+      "city" => "MISSISSAUGA",
+      "postalcode" => "L5B 4L2"
     )
   end
   

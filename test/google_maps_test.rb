@@ -1,10 +1,8 @@
 require 'test_helper'
 
+AddressStandardization::GoogleMaps.api_key = "ABQIAAAALHg3jKnK9wN9K3_ArJA6TxSTZ2OgdK08l2h0_gdsozNQ-6zpaxQvIY84J7Mh1fAHQrYGI4W27qKZaw"
+
 class GoogleMapsTest < Test::Unit::TestCase
-  before do
-    AddressStandardization::GoogleMaps.api_key = "ABQIAAAALHg3jKnK9wN9K3_ArJA6TxSTZ2OgdK08l2h0_gdsozNQ-6zpaxQvIY84J7Mh1fAHQrYGI4W27qKZaw"
-  end
-  
   test "A valid US address" do
     addr = AddressStandardization::GoogleMaps::Address.standardize(
       :street => "1600 Amphitheatre Parkway",
@@ -17,6 +15,7 @@ class GoogleMapsTest < Test::Unit::TestCase
       "state" => "CA",
       "province" => "CA",
       "postalcode" => "94043",
+      "zip" => "94043",
       "country" => "USA"
     )
   end
@@ -33,6 +32,7 @@ class GoogleMapsTest < Test::Unit::TestCase
       "state" => "ON",
       "province" => "ON",
       "postalcode" => "K9K",
+      "zip" => "K9K",
       "country" => "CANADA"
     )
   end

@@ -30,14 +30,17 @@ module AddressStandardization
             puts
             puts results_page.body
 
-            table = results_page.search("form")[2].next_sibling.next_sibling
-            status_th = table.search(is_canada ? "td" : "th")[0]
-            return unless status_th && status_th.inner_text =~ /Address Verified/
-            main_td = table.search("tr:eq(#{is_canada ? 1 : 2})/td:eq(1)")
-            strongs = main_td.search("strong")
-            street = strongs.first.inner_text
-            strongs[1].search("a:gt(0)").remove
-            city, state, zip = strongs[1].inner_html.strip_newlines.strip_html.split(/(?:&\w+;)+/)
+            table = results_page.search("table.Tableresultborder")[1]
+            return unless table
+            status_row = table.at("span.Titresultableok")
+            return unless status_row && status_row.inner_text =~ /Address Verified/
+            main_td = table.search("tr:eq(#{is_canada ? 2 : 3})/td:eq(2)")
+            street_part, city_state_zip_part = main_td.inner_html.split("<br>")[0..1]
+            street = street_part.strip_html.strip_whitespace
+            city, state, zip = city_state_zip_part.strip_html.split("\240\240")
+            #pp :main_td => main_td.to_s,
+            #   :street_part => street_part,
+            #   :city_state_zip_part => city_state_zip_part
             fields = [ street.upcase, city.upcase, state.upcase, zip.upcase ]
           end
           fields

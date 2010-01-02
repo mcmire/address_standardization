@@ -1,4 +1,4 @@
-# address_standardization: A tiny Ruby library to quickly standardize a postal address
+# address_standardization: A tiny Ruby library to quickly standardize a postal address.
 # Copyright (C) 2008 Elliot Winkler. Released under the MIT license.
 
 require File.dirname(__FILE__)+'/address_standardization/ruby_ext'
