@@ -15,3 +15,9 @@ class String
     end.tr(' ', '+')
   end
 end
+
+class Hash
+  def stringify_keys
+    self.inject({}) {|h,(k,v)| h[k.to_s] = v; h }
+  end
+end

@@ -13,11 +13,13 @@ module AddressStandardization
         def standardize(address_info)
           raise "API key not specified.\nCall AddressStandardization::GoogleMaps.api_key = '...' before you call .standardize()." unless GoogleMaps.api_key
           
+          address_info = address_info.stringify_keys
+          
           address_str = [
-            address_info[:street],
-            address_info[:city],
-            (address_info[:state] || address_info[:province]),
-            address_info[:zip]
+            address_info["street"],
+            address_info["city"],
+            (address_info["state"] || address_info["province"]),
+            address_info["zip"]
           ].join(" ")
           url = "http://maps.google.com/maps/geo?q=#{address_str.url_escape}&output=xml&key=#{GoogleMaps.api_key}&oe=utf-8"
           #puts "Calling Google Maps URL: #{url}"

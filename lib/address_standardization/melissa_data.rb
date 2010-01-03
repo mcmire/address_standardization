@@ -2,17 +2,20 @@
 
 module AddressStandardization
   class MelissaData
-    class BaseAddress < AbstractAddress
+    class Address < AbstractAddress
+      self.valid_keys = %w(street city state province zip postalcode country)
+      
       class << self
-      protected
-        def standardize(address_info, action, attrs_to_fields)
-          is_canada = (address_info[:country] == "CANADA")
+        def standardize(address_info)
+          address_info = address_info.stringify_keys
+          
+          is_canada = (address_info["country"].to_s.upcase == "CANADA")
           addr = new(address_info)
           
-          url = "http://www.melissadata.com/lookups/#{action}"
+          url = "http://www.melissadata.com/lookups/#{action(is_canada)}"
           params = []
-          attrs_to_fields.each do |attr, field|
-            key, val = field, addr.send(attr)
+          attrs_to_fields(is_canada).each do |attr, field|
+            key, val = field, address_info[attr]
             params << "#{key}=#{val.url_escape}" if val
           end
           url << "?" + params.join("&")
@@ -20,7 +23,7 @@ module AddressStandardization
           
           #puts "URL: <#{url}>"
           
-          fields = nil
+          attrs = {:country => (is_canada ? "CANADA" : "USA")}
           WWW::Mechanize.new do |ua|
             results_page = ua.get(url)
             
@@ -45,33 +48,24 @@ module AddressStandardization
               separator = "\240\240"
             end
             city, state, zip = city_state_zip_part.strip_html.split(separator)
-            fields = [ street.upcase, city.upcase, state.upcase, zip.upcase ]
+            attrs[:street] = street.upcase
+            attrs[:city] = city.upcase
+            attrs[:province] = attrs[:state] = state.upcase
+            attrs[:postalcode] = attrs[:zip] = zip.upcase
           end
-          fields
+          new(attrs)
         end
-      end
-    end
-    
-    class USAddress < BaseAddress
-      self.valid_keys = %w(street city state zip country)
-      
-      def self.standardize(address_info)
-        address_info[:country] = "USA"
-        if fields = super(address_info, "AddressVerify.asp", :street => 'Address', :city => 'city', :state => 'state', :zip => 'zip')
-          street, city, state, zip = fields
-          new(:street => street, :city => city, :state => state, :zip => zip, :country => address_info[:country])
+        
+        def action(is_canada)
+          is_canada ? "CanadianAddressVerify.asp" : "AddressVerify.asp"
         end
-      end
-    end
-    
-    class CanadianAddress < BaseAddress
-      self.valid_keys = %w(street city province postalcode country)
-      
-      def self.standardize(address_info)
-        address_info[:country] = "CANADA"
-        if fields = super(address_info, "CanadianAddressVerify.asp", :street => 'Street', :city => 'city', :province => 'Province', :postalcode => 'Postcode')
-          street, city, province, postalcode = fields
-          new(:street => street, :city => city, :province => province, :postalcode => postalcode, :country => address_info[:country])
+        
+        def attrs_to_fields(is_canada)
+          if is_canada
+            {"street" => 'Street', "city" => 'city', "province" => 'Province', "postalcode" => 'Postcode'}
+          else
+            {"street" => 'Address', "city" => 'city', "state" => 'state', "zip" => 'zip'}
+          end
         end
       end
     end

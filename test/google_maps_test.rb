@@ -5,7 +5,7 @@ AddressStandardization::GoogleMaps.api_key = "ABQIAAAALHg3jKnK9wN9K3_ArJA6TxSTZ2
 class GoogleMapsTest < Test::Unit::TestCase
   test "A valid US address" do
     addr = AddressStandardization::GoogleMaps::Address.standardize(
-      :street => "1600 Amphitheatre Parkway",
+      "street" => "1600 Amphitheatre Parkway",
       :city => "Mountain View",
       :state => "CA"
     )
@@ -24,7 +24,7 @@ class GoogleMapsTest < Test::Unit::TestCase
     addr = AddressStandardization::GoogleMaps::Address.standardize(
       :street => "1770 Stenson Boulevard",
       :city => "Peterborough",
-      :province => "ON"
+      "province" => "ON"
     )
     addr.should == AddressStandardization::GoogleMaps::Address.new(
       "street" => "1770 STENSON BLVD",
