@@ -3,27 +3,26 @@
 module AddressStandardization
   class MelissaData
     class BaseAddress < AbstractAddress
-      cattr_inheritable :start_url
-      
-      def initialize(address_info)
-        raise NotImplementedError, "You must define start_url" unless self.class.start_url
-        super(address_info)
-      end
-      
       class << self
       protected
         def standardize(address_info, action, attrs_to_fields)
-          is_canada = (action =~ /Canadian/)
+          is_canada = (address_info[:country] == "CANADA")
           addr = new(address_info)
+          
+          url = "http://www.melissadata.com/lookups/#{action}"
+          params = []
+          attrs_to_fields.each do |attr, field|
+            key, val = field, addr.send(attr)
+            params << "#{key}=#{val.url_escape}" if val
+          end
+          url << "?" + params.join("&")
+          url << "&FindAddress=Submit"
+          
+          #puts "URL: <#{url}>"
+          
           fields = nil
           WWW::Mechanize.new do |ua|
-            form_page = ua.get(start_url)
-            form = form_page.form_with(:action => action) do |form|
-              attrs_to_fields.each do |attr, field|
-                form[field] = addr.send(attr)
-              end
-            end
-            results_page = form.submit(form.buttons.first)
+            results_page = ua.get(url)
             
             ##puts "** Response **"
             ##puts
@@ -54,25 +53,25 @@ module AddressStandardization
     end
     
     class USAddress < BaseAddress
-      self.start_url = 'http://www.melissadata.com/lookups/AddressVerify.asp'
-      self.valid_keys = %w(street city state zip)
+      self.valid_keys = %w(street city state zip country)
       
       def self.standardize(address_info)
+        address_info[:country] = "USA"
         if fields = super(address_info, "AddressVerify.asp", :street => 'Address', :city => 'city', :state => 'state', :zip => 'zip')
           street, city, state, zip = fields
-          new(:street => street, :city => city, :state => state, :zip => zip)
+          new(:street => street, :city => city, :state => state, :zip => zip, :country => address_info[:country])
         end
       end
     end
     
     class CanadianAddress < BaseAddress
-      self.start_url = 'http://www.melissadata.com/lookups/CanadianAddressVerify.asp'
-      self.valid_keys = %w(street city province postalcode)
+      self.valid_keys = %w(street city province postalcode country)
       
       def self.standardize(address_info)
+        address_info[:country] = "CANADA"
         if fields = super(address_info, "CanadianAddressVerify.asp", :street => 'Street', :city => 'city', :province => 'Province', :postalcode => 'Postcode')
           street, city, province, postalcode = fields
-          new(:street => street, :city => city, :province => province, :postalcode => postalcode)
+          new(:street => street, :city => city, :province => province, :postalcode => postalcode, :country => address_info[:country])
         end
       end
     end
