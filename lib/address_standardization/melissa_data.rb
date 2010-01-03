@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'mechanize'
 
 module AddressStandardization
@@ -34,12 +36,26 @@ module AddressStandardization
             status_row = table.at("span.Titresultableok")
             return unless status_row && status_row.inner_text =~ /Address Verified/
             main_td = table.search("tr:eq(#{is_canada ? 2 : 3})/td:eq(2)")
-            street_part, city_state_zip_part = main_td.inner_html.split("<br>")[0..1]
+            main_td_s = main_td.inner_html
+            main_td_s.encode!("utf-8") if main_td_s.respond_to?(:encode!)
+            #main_td_s = main_td.to_s.force_encoding("utf-8")
+            # force_encoding("windows-1252").
+            street_part, city_state_zip_part = main_td_s.split("<br>")[0..1]
             street = street_part.strip_html.strip_whitespace
-            city, state, zip = city_state_zip_part.strip_html.split("\240\240")
-            #pp :main_td => main_td.to_s,
-            #   :street_part => street_part,
-            #   :city_state_zip_part => city_state_zip_part
+            #pp(
+            #  #:main_td_s => main_td_s,
+            #  #:main_td_s_encoding => main_td_s.encoding,
+            #  :street_part => street_part, #[street_part, street_part.encoding],
+            #  :city_state_zip_part => city_state_zip_part #[city_state_zip_part, city_state_zip_part.encoding]
+            #)
+            if main_td_s.respond_to?(:encode!)
+              # ruby 1.9
+              separator = city_state_zip_part.include?("&#160;&#160;") ? "&#160;&#160;" : "  "
+            else
+              # ruby 1.8
+              separator = "\240\240"
+            end
+            city, state, zip = city_state_zip_part.strip_html.split(separator)
             fields = [ street.upcase, city.upcase, state.upcase, zip.upcase ]
           end
           fields
