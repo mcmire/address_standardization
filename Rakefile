@@ -1,9 +1,12 @@
 require 'rubygems'
 require 'rake'
 
+require File.dirname(__FILE__) + "/lib/address_standardization/version.rb"
+
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
+    gem.version = AddressStandardization::VERSION
     gem.name = "address_standardization"
     gem.summary = %Q{A tiny Ruby library to quickly standardize a postal address}
     gem.description = %Q{A tiny Ruby library to quickly standardize a postal address}
