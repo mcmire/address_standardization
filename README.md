@@ -22,13 +22,13 @@ Right now this library supports two services: MelissaData and Google Maps.
 
 MelissaData provides two services itself: [US address lookup](http://www.melissadata.com/lookups/AddressVerify.asp) and [Canadian address lookup](http://www.melissadata.com/lookups/CanadianAddressVerify.asp). They both work the same way, however. First, here's how to standardize a US address:
 
-    addr = AddressStandardization::MelissaData::Address.standardize(
+    addr = AddressStandardization::MelissaData.standardize_address(
       :street => "1 Infinite Loop",
       :city => "Cupertino",
       :state => "CA"
     )
   
-This submits the address to MelissaData. If the address can't be found, you'll get back `nil`. But if the address can be found (as in this case), you'll get an instance of `AddressStandardization::MelissaData::Address`. If you store the instance, you can refer to the individual fields like so:
+This submits the address to MelissaData. If the address can't be found, you'll get back `nil`. But if the address can be found (as in this case), you'll get an instance of `AddressStandardization::Address`. If you store the instance, you can refer to the individual fields like so:
 
     addr.street  #=> "1 INFINITE LOOP"
     addr.city    #=> "CUPERTINO"
@@ -38,7 +38,7 @@ This submits the address to MelissaData. If the address can't be found, you'll g
 
 And standardizing a Canadian address:
 
-    addr = AddressStandardization::MelissaData::Address.standardize(
+    addr = AddressStandardization::MelissaData.standardize_address(
       :street => "103 Metig St",
       :city => "Sault Ste Marie",
       :province => "ON",
@@ -50,13 +50,13 @@ And standardizing a Canadian address:
     addr.postalcode  #=> "P6A 5K9"
     addr.country     #=> "CANADA"
 
-Note that when standardizing a Canadian address, the `:country` must be "Canada" (or "CANADA" works too). Otherwise it will be treated as a US address.
+Note that when standardizing a Canadian address, the `:country` must be "Canada" (or "CANADA", or anything like that). Otherwise it will be treated as a US address.
 
 Also note that I'm referring to the address's province as `province`, but you can also use `state` if you like. Same goes for the postal code -- you can also refer to it as `zip`.
 
 Using Google Maps to validate an address is just as easy:
 
-    addr = AddressStandardization::GoogleMaps::Address.standardize(
+    addr = AddressStandardization::GoogleMaps.standardize_address(
       :street => "1600 Amphitheatre Parkway",
       :city => "Mountain View",
       :state => "CA"
@@ -69,7 +69,7 @@ Using Google Maps to validate an address is just as easy:
   
 And, again, a Canadian address:
 
-    addr = AddressStandardization::GoogleMaps::Address.standardize(
+    addr = AddressStandardization::GoogleMaps.standardize_address(
       :street => "1770 Stenson Blvd.",
       :city => "Peterborough",
       :province => "ON"
@@ -92,4 +92,4 @@ If you find any bugs with this plugin, feel free to:
 
 ## Author/License
 
-(c) 2008 Elliot Winkler. Released under the MIT license.
+(c) 2008-2010 Elliot Winkler. Released under the MIT license.
