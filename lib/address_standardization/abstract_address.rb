@@ -1,14 +1,13 @@
+# TODO: Rename to address.rb
+
 module AddressStandardization
   class StandardizationError < StandardError; end
   
-  class AbstractAddress
-    
-    extend ClassLevelInheritableAttributes
-    cattr_inheritable :valid_keys
-      
-    def self.standardize
-      raise NotImplementedError, "You must override .standardize in a subclass"
+  class Address
+    class << self
+      attr_accessor :valid_keys
     end
+    self.valid_keys = %w(street city state province zip postalcode country)
     
     attr_reader :address_info
   
@@ -43,7 +42,7 @@ module AddressStandardization
     end
     
     def ==(other)
-      other.kind_of?(AbstractAddress) && @address_info == other.address_info
+      other.kind_of?(self.class) && @address_info == other.address_info
     end
     
   private
