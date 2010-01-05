@@ -23,11 +23,12 @@ module AddressStandardization
         
         attrs = {:country => (is_canada ? "CANADA" : "USA")}
         WWW::Mechanize.new do |ua|
+          AddressStandardization.debug "[MelissaData] Hitting URL: #{url}"
           results_page = ua.get(url)
-          
-          ##puts "** Response **"
-          ##puts
-          ##puts results_page.body
+          AddressStandardization.debug "[MelissaData] Response body:"
+          AddressStandardization.debug "--------------------------------------------------"
+          AddressStandardization.debug results_page.body
+          AddressStandardization.debug "--------------------------------------------------"
 
           table = results_page.search("table.Tableresultborder")[1]
           return unless table

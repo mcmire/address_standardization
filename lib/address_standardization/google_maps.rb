@@ -18,12 +18,16 @@ module AddressStandardization
           address_info["zip"]
         ].join(" ")
         url = "http://maps.google.com/maps/geo?q=#{address_str.url_escape}&output=xml&key=#{GoogleMaps.api_key}&oe=utf-8"
-        #puts "Calling Google Maps URL: #{url}"
+        AddressStandardization.debug "[GoogleMaps] Hitting URL: #{url}"
         uri = URI.parse(url)
         res = Net::HTTP.get_response(uri)
         return unless res.is_a?(Net::HTTPSuccess)
         
         content = res.body
+        AddressStandardization.debug "[GoogleMaps] Response body:"
+        AddressStandardization.debug "--------------------------------------------------"
+        AddressStandardization.debug content
+        AddressStandardization.debug "--------------------------------------------------"
         xml = Nokogiri::XML(content)
         xml.remove_namespaces! # good or bad? I say good.
         return unless xml.at("/kml/Response/Status/code").inner_text == "200"
