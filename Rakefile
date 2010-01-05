@@ -14,8 +14,7 @@ begin
     gem.email = "elliot.winkler@gmail.com"
     gem.homepage = "http://github.com/mcmire/address_standardization"
     gem.add_dependency "mechanize"
-    gem.add_dependency "hpricot"
-    gem.add_development_dependency "mcmire-contest"
+    gem.add_development_dependency "jeremymcanally-context"
     gem.add_development_dependency "mcmire-matchy"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
