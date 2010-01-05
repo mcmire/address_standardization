@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
      "README.md",
      "Rakefile",
      "TODO",
+     "address_standardization.gemspec",
      "lib/address_standardization.rb",
      "lib/address_standardization/abstract_service.rb",
      "lib/address_standardization/address.rb",
