@@ -1,5 +1,5 @@
 require 'rubygems'
-gem 'jeremymcanally-context'
+gem 'mcmire-context'
 require 'context'
 gem 'mcmire-matchy'
 require 'matchy'

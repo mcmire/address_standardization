@@ -14,7 +14,7 @@ begin
     gem.email = "elliot.winkler@gmail.com"
     gem.homepage = "http://github.com/mcmire/address_standardization"
     gem.add_dependency "mechanize"
-    gem.add_development_dependency "jeremymcanally-context"
+    gem.add_development_dependency "mcmire-context"
     gem.add_development_dependency "mcmire-matchy"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
@@ -43,7 +43,7 @@ rescue LoadError
   end
 end
 
-task :test => :check_dependencies
+task :test => [:"check_dependencies:development", :check_dependencies]
 
 task :default => :test
 
