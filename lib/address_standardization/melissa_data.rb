@@ -22,7 +22,7 @@ module AddressStandardization
         #puts "URL: <#{url}>"
         
         attrs = {:country => (is_canada ? "CANADA" : "USA")}
-        WWW::Mechanize.new do |ua|
+        Mechanize.new do |ua|
           AddressStandardization.debug "[MelissaData] Hitting URL: #{url}"
           results_page = ua.get(url)
           AddressStandardization.debug "[MelissaData] Response body:"
