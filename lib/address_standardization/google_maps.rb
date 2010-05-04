@@ -16,7 +16,7 @@ module AddressStandardization
           address_info["city"],
           (address_info["state"] || address_info["province"]),
           address_info["zip"]
-        ].join(" ")
+        ].compact.join(" ")
         url = "http://maps.google.com/maps/geo?q=#{address_str.url_escape}&output=xml&key=#{GoogleMaps.api_key}&oe=utf-8"
         AddressStandardization.debug "[GoogleMaps] Hitting URL: #{url}"
         uri = URI.parse(url)

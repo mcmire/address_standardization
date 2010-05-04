@@ -48,18 +48,20 @@ class MelissaDataTest < Test::Unit::TestCase
   
     test "Valid Canadian address" do
       addr = AddressStandardization::MelissaData.standardize_address(
-        "street" => "3025 Clayhill Rd",
-        :city => "Mississauga",
-        "province" => "ON",
+        "street" => "55 Cordova St E #415",
+        :city => "Vancouver",
+        "province" => "BC",
+        # FIXME: This must be postalcode, it doesn't work with zip...
+        :postalcode => "V6A0A5",
         :country => "CANADA"
       )
       addr.should == AddressStandardization::Address.new(
-        "street" => "3025 CLAYHILL RD",
-        "state" => "ON",
-        "province" => "ON",
-        "city" => "MISSISSAUGA",
-        "zip" => "L5B 4L2",
-        "postalcode" => "L5B 4L2",
+        "street" => "415-55 CORDOVA ST E",
+        "city" => "VANCOUVER",
+        "state" => "BC",
+        "province" => "BC",
+        "postalcode" => "V6A 0A5",
+        "zip" => "V6A 0A5",
         "country" => "CANADA"
       )
     end

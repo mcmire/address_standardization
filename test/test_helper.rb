@@ -4,8 +4,6 @@ require 'context'
 gem 'mcmire-matchy'
 require 'matchy'
 
-require 'address_standardization'
-
 module Context
   class SharedBehavior < Module
     # Fix this so that sharing a module twice within two sub-contexts
@@ -46,3 +44,6 @@ class << Test::Unit::TestCase
   end
   %w(uses it_should_behave_like behaves_like uses_examples_from).each {|m| alias_method m, :use}
 end
+
+require 'address_standardization'
+AddressStandardization.debug_mode = true

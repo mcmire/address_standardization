@@ -23,17 +23,17 @@ class GoogleMapsTest < Test::Unit::TestCase
   
     test "A valid Canadian address" do
       addr = AddressStandardization::GoogleMaps.standardize_address(
-        :street => "1770 Stenson Boulevard",
-        :city => "Peterborough",
-        "province" => "ON"
+        :street => "55 East Cordova St. Apt 415",
+        :city => "Vancouver",
+        "province" => "BC"
       )
       addr.should == AddressStandardization::Address.new(
-        "street" => "1770 STENSON BLVD",
-        "city" => "PETERBOROUGH",
-        "state" => "ON",
-        "province" => "ON",
-        "postalcode" => "K9K",
-        "zip" => "K9K",
+        "street" => "55 CORDOVA ST E #415",
+        "city" => "VANCOUVER",
+        "state" => "BC",
+        "province" => "BC",
+        "postalcode" => "V6A",
+        "zip" => "V6A",
         "country" => "CANADA"
       )
     end
