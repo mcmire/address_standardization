@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{address_standardization}
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Elliot Winkler"]
-  s.date = %q{2010-02-01}
+  s.date = %q{2010-05-04}
   s.description = %q{A tiny Ruby library to quickly standardize a postal address}
   s.email = %q{elliot.winkler@gmail.com}
   s.extra_rdoc_files = [
@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/mcmire/address_standardization}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{A tiny Ruby library to quickly standardize a postal address}
   s.test_files = [
     "test/google_maps_test.rb",
