@@ -46,11 +46,15 @@ module AddressStandardization
             # ruby 1.8
             separator = "\240\240"
           end
+          county = nil
+          matches = results_page.scan(/County \w+/)
+          county = matches.first.gsub('County ', '')
           city, state, zip = city_state_zip_part.strip_html.split(separator)
           attrs[:street] = street.upcase
           attrs[:city] = city.upcase
           attrs[:province] = attrs[:state] = state.upcase
           attrs[:postalcode] = attrs[:zip] = zip.upcase
+          attrs[:county] = county.upcase
         end
         Address.new(attrs)
       end

@@ -39,6 +39,7 @@ module AddressStandardization
         addr[:province] = addr[:state] = get_inner_text(xml, '//AdministrativeAreaName').to_s
         addr[:zip]      = addr[:postalcode] = get_inner_text(xml, '//PostalCodeNumber').to_s
         addr[:country]  = get_inner_text(xml, '//CountryName').to_s
+        addr[:county]   = get_inner_text(xml, '//SubAdministrativeAreaName').to_s
         
         return if addr[:street] =~ /^\s*$/ or addr[:city]  =~ /^\s*$/
         
