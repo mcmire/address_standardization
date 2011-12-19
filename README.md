@@ -135,7 +135,7 @@ As mentioned, you can also do P.O. boxes:
 * Run `bundle install` to ensure you have all dependencies.
 * Add your changes.
 * Write some tests! Tests are written in RSpec, so `rspec FILE` to run a
-  single, and `rake test` to run all of the tests.
+  single test, and `rake test` to run all of the tests.
 * If you're feeling generous, fork the project and submit a pull request. I'll
   take a look it when I can.
 
