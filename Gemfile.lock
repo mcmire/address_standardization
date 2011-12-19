@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    address_standardization (0.4.1)
-      mechanize
+    address-standardization (0.4.1)
+      mechanize (~> 2.0.1)
 
 GEM
   remote: http://rubygems.org/
@@ -24,6 +24,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  address_standardization!
+  address-standardization!
   mcmire-context
   mcmire-matchy
