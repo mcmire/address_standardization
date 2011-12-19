@@ -19,8 +19,6 @@ require "#{here}/address_standardization/melissa_data"
 require "#{here}/address_standardization/google_maps"
 
 module AddressStandardization
-  class StandardizationError < StandardError; end
-
   class << self
     attr_accessor :test_mode
     alias_method :test_mode?, :test_mode
