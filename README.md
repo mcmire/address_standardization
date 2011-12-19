@@ -27,7 +27,7 @@ MelissaData provides two services itself: [US address lookup](http://www.melissa
       :city => "Cupertino",
       :state => "CA"
     )
-  
+
 This submits the address to MelissaData. If the address can't be found, you'll get back `nil`. But if the address can be found (as in this case), you'll get an instance of `AddressStandardization::Address`. If you store the instance, you can refer to the individual fields like so:
 
     addr.street  #=> "1 INFINITE LOOP"
@@ -61,26 +61,26 @@ Using Google Maps to validate an address is just as easy:
       :city => "Mountain View",
       :state => "CA"
     )
-    addr.street     #=> "1600 AMPHITHEATRE PKWY"
-    addr.city       #=> "MOUNTAIN VIEW"
+    addr.street     #=> "1600 Amphitheatre Pkwy",
+    addr.city       #=> "Mountain View"
+    addr.county     #=> "Santa Clara"
     addr.state      #=> "CA"
     addr.zip        #=> "94043"
-    addr.country    #=> "USA"
-  
+    addr.country    #=> "United States"
+
 And, again, a Canadian address:
 
     addr = AddressStandardization::GoogleMaps.standardize_address(
-      :street => "1770 Stenson Blvd.",
-      :city => "Peterborough",
-      :province => "ON"
+      :street => "55 East Cordova St. Apt 415",
+      :city => "Vancouver",
+      :province => "BC"
     )
-    addr.street      #=> "1770 STENSON BLVD"
-    addr.city        #=> "PETERBOROUGH"
+    addr.street      #=> "55 E Cordova St"
+    addr.city        #=> "Vancouver"
+    addr.county      #=> "Greater Vancouver Regional District"
     addr.province    #=> "ON"
-    addr.postalcode  #=> "K9K"
-    addr.country     #=> "CANADA"
-
-Sharp eyes will notice that the Google Maps API doesn't return the full postal code for Canadian addresses. If you know why this is please let me know (my email address is below).
+    addr.postalcode  #=> "V6A 1K3"
+    addr.country     #=> "Canada"
 
 ## Support
 

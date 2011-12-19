@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = AddressStandardization::VERSION
 
   gem.add_runtime_dependency('mechanize', '~> 2.0.1')
+  gem.add_runtime_dependency('httparty', '~> 0.8.1')
 
   gem.add_development_dependency('rspec', '~> 2.7.0')
 end

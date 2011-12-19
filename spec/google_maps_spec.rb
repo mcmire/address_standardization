@@ -1,7 +1,5 @@
 require File.expand_path('../spec_helper', __FILE__)
 
-AddressStandardization::GoogleMaps.api_key = "ABQIAAAALHg3jKnK9wN9K3_ArJA6TxSTZ2OgdK08l2h0_gdsozNQ-6zpaxQvIY84J7Mh1fAHQrYGI4W27qKZaw"
-
 describe AddressStandardization::GoogleMaps do
   context 'in production mode' do
     before do
@@ -16,13 +14,14 @@ describe AddressStandardization::GoogleMaps do
         :state => "CA"
       )
       addr.should == AddressStandardization::Address.new(
-        "street" => "1600 AMPHITHEATRE PKWY",
-        "city" => "MOUNTAIN VIEW",
+        "street" => "1600 Amphitheatre Pkwy",
+        "city" => "Mountain View",
+        "county" => "Santa Clara",
         "state" => "CA",
         "province" => "CA",
         "postalcode" => "94043",
         "zip" => "94043",
-        "country" => "USA"
+        "country" => "United States"
       )
     end
 
@@ -34,13 +33,14 @@ describe AddressStandardization::GoogleMaps do
         "province" => "BC"
       )
       addr.should == AddressStandardization::Address.new(
-        "street" => "55 CORDOVA ST E #415",
-        "city" => "VANCOUVER",
+        "street" => "55 E Cordova St",
+        "city" => "Vancouver",
+        "county" => "Greater Vancouver Regional District",
         "state" => "BC",
         "province" => "BC",
-        "postalcode" => "V6A",
-        "zip" => "V6A",
-        "country" => "CANADA"
+        "postalcode" => "V6A 1K3",
+        "zip" => "V6A 1K3",
+        "country" => "Canada"
       )
     end
 
