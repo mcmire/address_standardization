@@ -15,7 +15,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = AddressStandardization::VERSION
 
-  gem.add_runtime_dependency('mechanize', '~> 2.0.1')
+  # 2.0.1 contains a bug, hardcode to 2.0.0 for now until 2.1 comes out
+  gem.add_runtime_dependency('mechanize', '2.0.0')
   gem.add_runtime_dependency('httparty', '~> 0.8.1')
 
   gem.add_development_dependency('rspec', '~> 2.7.0')

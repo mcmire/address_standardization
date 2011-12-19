@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     address-standardization (0.4.1)
-      httparty
-      mechanize (~> 2.0.1)
+      httparty (~> 0.8.1)
+      mechanize (= 2.0.0)
 
 GEM
   remote: http://rubygems.org/
@@ -12,7 +12,7 @@ GEM
     httparty (0.8.1)
       multi_json
       multi_xml
-    mechanize (2.0.1)
+    mechanize (2.0)
       net-http-digest_auth (~> 1.1, >= 1.1.1)
       net-http-persistent (~> 1.8)
       nokogiri (~> 1.4)
