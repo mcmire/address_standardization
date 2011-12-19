@@ -1,23 +1,29 @@
-class String
-  def strip_html
-    gsub(/<\/?([^>]+)>/, '')
-  end
-  def strip_newlines
-    gsub(/[\r\n]+/, '')
-  end
-  def strip_whitespace
-    strip_newlines.squeeze(" ").strip
-  end
-  
-  def url_escape
-    gsub(/([^ a-zA-Z0-9_.-]+)/n) do
-      '%' + $1.unpack('H2' * $1.size).join('%').upcase
-    end.tr(' ', '+')
-  end
-end
-
 class Hash
+# Return a new hash with all keys converted to strings.
   def stringify_keys
-    self.inject({}) {|h,(k,v)| h[k.to_s] = v; h }
+    dup.stringify_keys!
+  end
+
+  # Destructively convert all keys to strings.
+  def stringify_keys!
+    keys.each do |key|
+      self[key.to_s] = delete(key)
+    end
+    self
+  end
+
+  # Return a new hash with all keys converted to symbols, as long as
+  # they respond to +to_sym+.
+  def symbolize_keys
+    dup.symbolize_keys!
+  end
+
+  # Destructively convert all keys to symbols, as long as they respond
+  # to +to_sym+.
+  def symbolize_keys!
+    keys.each do |key|
+      self[(key.to_sym rescue key) || key] = delete(key)
+    end
+    self
   end
 end
