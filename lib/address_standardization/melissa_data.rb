@@ -18,31 +18,29 @@ module AddressStandardization
         url << "?" + params.join("&")
         url << "&FindAddress=Submit"
 
-        # puts "URL: <#{url}>"
-
         addr = Address.new(
           :country => (is_canada ? "Canada" : "United States")
         )
         ua = Mechanize.new
-        AddressStandardization.debug "[MelissaData] Hitting URL: #{url}"
+        logger.debug "[MelissaData] Hitting URL: #{url}"
         results_page = ua.get(url)
-        AddressStandardization.debug "[MelissaData] Response body:"
-        AddressStandardization.debug "--------------------------------------------------"
-        AddressStandardization.debug results_page.body
-        AddressStandardization.debug "--------------------------------------------------"
+        logger.debug "[MelissaData] Response body:"
+        logger.debug "--------------------------------------------------"
+        logger.debug results_page.body
+        logger.debug "--------------------------------------------------"
 
         table = results_page.at("table.Tableresultborder")
         unless table
-          warn "Couldn't find table"
+          logger.debug "Couldn't find table"
           return nil
         end
         status_row = table.at("div.Titresultableok")
         unless status_row
-          warn "Couldn't find status_row"
+          logger.debug "Couldn't find status_row"
           return nil
         end
         unless status_row.inner_text =~ /Address Verified/
-          warn "Address not verified"
+          logger.debug "Address not verified"
           return nil
         end
         main_td = table.search("tr:eq(#{is_canada ? 2 : 3})/td:eq(2)")

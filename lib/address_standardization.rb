@@ -1,5 +1,7 @@
 # address_standardization: A tiny Ruby library to quickly standardize a postal address.
-# Copyright (C) 2008-2010 Elliot Winkler. Released under the MIT license.
+# Copyright (C) 2008-2011 Elliot Winkler. Released under the MIT license.
+
+require 'logging'
 
 # TODO: Force users to require MelissaData or GoogleMaps manually
 # so that no dependency is required without being unused
@@ -24,14 +26,11 @@ module AddressStandardization
     attr_accessor :test_mode
     alias_method :test_mode?, :test_mode
 
-    attr_accessor :debug_mode
-    alias_method :debug_mode?, :debug_mode
-
-    def debug(*args)
-      puts(*args) if debug_mode?
+    def logger
+      Logging.logger[self]
     end
   end
 
   self.test_mode = false
-  self.debug_mode = $DEBUG || ENV["DEBUG"] || false
+  logger.level = ($DEBUG || ENV['DEBUG']) ? :debug : :info
 end

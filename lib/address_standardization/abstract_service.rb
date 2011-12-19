@@ -26,6 +26,14 @@ module AddressStandardization
         response = (self.canned_response ||= :success)
         response == :success ? Address.new(address_info) : nil
       end
+
+      def get_live_response
+        raise NotImplementedError
+      end
+
+      def logger
+        AddressStandardization.logger
+      end
     end
   end
 end

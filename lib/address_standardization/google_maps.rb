@@ -31,13 +31,13 @@ module AddressStandardization
           }
         )
         data = resp.parsed_response
-        AddressStandardization.debug <<EOT
+        logger.debug <<EOT
 [GoogleMaps] Response body:
 --------------------------------------------------------------------------------
 #{resp.body}
 --------------------------------------------------------------------------------
 EOT
-        AddressStandardization.debug <<EOT
+        logger.debug <<EOT
 [GoogleMaps] Parsed response:
 --------------------------------------------------------------------------------
 #{data}
