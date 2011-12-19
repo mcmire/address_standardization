@@ -46,7 +46,7 @@ EOT
 
         if data['results'].any? && data['status'] == "OK"
           result = data['results'].first
-          addr = {}
+          addr = Address.new
           street = ["", ""]
           result['address_components'].each do |comp|
             case
@@ -55,20 +55,20 @@ EOT
             when comp['types'].include?("route")
               street[1] = comp['long_name']
             when comp['types'].include?("locality")
-              addr[:city] = comp['long_name']
+              addr.city = comp['long_name']
             when comp['types'].include?("administrative_area_level_1")
-              addr[:state] = addr[:province] = comp['short_name']
+              addr.region = comp['short_name']
             when comp['types'].include?("postal_code")
-              addr[:postalcode] = addr[:zip] = comp['long_name']
+              addr.postal_code = comp['long_name']
             when comp['types'].include?("country")
               # addr[:country_code] = comp['short_name']
-              addr[:country] = comp['long_name']
+              addr.country = comp['long_name']
             when comp['types'].include?("administrative_area_level_2")
-              addr[:county] = addr[:district] = comp['long_name']
+              addr.district = comp['long_name']
             end
           end
-          addr[:street] = street.join(" ").strip
-          Address.new(addr)
+          addr.street = street.join(" ").strip
+          return addr
         else
           return nil
         end

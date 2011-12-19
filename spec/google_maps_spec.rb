@@ -17,10 +17,7 @@ describe AddressStandardization::GoogleMaps do
         "street" => "1600 Amphitheatre Pkwy",
         "city" => "Mountain View",
         "county" => "Santa Clara",
-        "district" => "Santa Clara",
         "state" => "CA",
-        "province" => "CA",
-        "postalcode" => "94043",
         "zip" => "94043",
         "country" => "United States"
       )
@@ -36,12 +33,9 @@ describe AddressStandardization::GoogleMaps do
       addr.should == AddressStandardization::Address.new(
         "street" => "55 E Cordova St",
         "city" => "Vancouver",
-        "county" => "Greater Vancouver Regional District",
         "district" => "Greater Vancouver Regional District",
-        "state" => "BC",
         "province" => "BC",
-        "postalcode" => "V6A 1K3",
-        "zip" => "V6A 1K3",
+        "postal_code" => "V6A 1K3",
         "country" => "Canada"
       )
     end
