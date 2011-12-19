@@ -9,6 +9,10 @@ module AddressStandardization
 
         is_canada = (address_info["country"].to_s.upcase == "CANADA")
 
+        if is_canada
+          raise "The MelissaData adapter doesn't work for Canadian addresses currently. This is a known issue and will be fixed in a future release."
+        end
+
         url = "http://www.melissadata.com/lookups/#{action(is_canada)}"
         params = []
         attrs_to_fields(is_canada).each do |attr, field|
