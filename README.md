@@ -7,7 +7,7 @@ postal address, either via the Google Geocoding API or MelissaData. So if you
 have an online store and you need to verify a shipping address, then you might
 consider using this library.
 
-## What is it not?
+## What is it *not*?
 
 This is not a library to *geocode* addresses or locations. In other words, you
 won't get world coordinates back for a location. If you need this information,
@@ -144,11 +144,15 @@ As mentioned, you can also do P.O. boxes:
 * Evan Whalen ([evanwhalen](http://github.com/evanwhalen))
 * Ryan Heneise ([mysmallidea](http://github.com/mysmallidea))
 
----
+## Support
 
-(c) 2008-2011 Elliot Winkler. I'm @mcmire on Twitter, and my email address is
-<elliot.winkler@gmail.com>.
+If you need help, you can get in touch with me here on Github, or via:
 
-All code in this project is free to use, modify, and redistribute for any
-purpose, commercial or personal. An attribution, while not required, would be
-appreciated.
+  * **Twitter**: [@mcmire](http://twitter.com/mcmire)
+  * **Email**: <elliot.winkler@gmail.com>
+
+## Copyright/License
+
+(c) 2008-2011 Elliot Winkler. All code in this project is free to use, modify,
+and redistribute for any purpose, commercial or personal. An attribution, while
+not required, would be appreciated.
