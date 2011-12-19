@@ -1,8 +1,12 @@
-require 'test_helper'
+require File.expand_path('../spec_helper', __FILE__)
 
-class MelissaDataTest < Test::Unit::TestCase
-  shared "production mode tests" do
-    test "Valid US address (implicit country)" do
+describe AddressStandardization::MelissaData do
+  context 'in production mode' do
+    before do
+      AddressStandardization.test_mode = nil
+    end
+
+    it "returns the correct data for a valid US address (with implicit country)" do
       addr = AddressStandardization::MelissaData.standardize_address(
         :street => "1 Infinite Loop",
         "city" => "Cupertino",
@@ -18,8 +22,8 @@ class MelissaDataTest < Test::Unit::TestCase
         "country" => "USA"
       )
     end
-  
-    test "Valid US address (explicit country)" do
+
+    it "returns the correct data for a valid US address (with explicit country)" do
       addr = AddressStandardization::MelissaData.standardize_address(
         :street => "1 Infinite Loop",
         :city => "Cupertino",
@@ -36,8 +40,8 @@ class MelissaDataTest < Test::Unit::TestCase
         "country" => "USA"
       )
     end
-  
-    test "Invalid US address" do
+
+    it "returns nothing for an invalid US address" do
       addr = AddressStandardization::MelissaData.standardize_address(
         :street => "123 Imaginary Lane",
         :city => "Some Town",
@@ -45,8 +49,8 @@ class MelissaDataTest < Test::Unit::TestCase
       )
       addr.should == nil
     end
-  
-    test "Valid Canadian address" do
+
+    it "returns the correct data for a valid Canadian address" do
       addr = AddressStandardization::MelissaData.standardize_address(
         "street" => "55 Cordova St E #415",
         :city => "Vancouver",
@@ -65,37 +69,19 @@ class MelissaDataTest < Test::Unit::TestCase
         "country" => "CANADA"
       )
     end
-  
-    test "Invalid Canadian address" do
+
+    it "returns nothing for an invalid Canadian address" do
       addr = AddressStandardization::MelissaData.standardize_address(
         :street => "123 Imaginary Lane",
         :city => "Some Town",
         :province => "BC"
       )
-      addr.should == nil
+      addr.should be_nil
     end
   end
-  
-  context "With test mode explicitly false" do
-    setup do
-      AddressStandardization.test_mode = false
-    end
-    uses "production mode tests"
-  end
-  
-  context "With test mode implicitly false" do
-    setup do
-      AddressStandardization.test_mode = nil
-    end
-    uses "production mode tests"
-  end
-  
-  context "With test mode true" do
-    setup do
-      AddressStandardization.test_mode = true
-    end
-    
-    test "Valid address (before and after)" do
+
+  context 'in test mode' do
+    it "returns the correct data for a valid address" do
       AddressStandardization::MelissaData.canned_response = :success
       addr = AddressStandardization::MelissaData.standardize_address(
         :street => "123 Imaginary Lane",
@@ -108,9 +94,8 @@ class MelissaDataTest < Test::Unit::TestCase
         :province => "BC"
       )
       AddressStandardization::MelissaData.canned_response = nil
-    end
-    
-    test "Valid address (block)" do
+
+      # block form
       AddressStandardization::MelissaData.with_canned_response(:success) do
         addr = AddressStandardization::MelissaData.standardize_address(
           :street => "123 Imaginary Lane",
@@ -124,26 +109,25 @@ class MelissaDataTest < Test::Unit::TestCase
         )
       end
     end
-    
-    test "Invalid address (before and after)" do
+
+    it "returns the correct data for an invalid address" do
       AddressStandardization::MelissaData.canned_response = :failure
       addr = AddressStandardization::MelissaData.standardize_address(
         :street => "123 Imaginary Lane",
         :city => "Some Town",
         :province => "BC"
       )
-      addr.should == nil
+      addr.should be_nil
       AddressStandardization::MelissaData.canned_response = nil
-    end
-    
-    test "Invalid address (block)" do
+
+      # block form
       AddressStandardization::MelissaData.with_canned_response(:failure) do
         addr = AddressStandardization::MelissaData.standardize_address(
           :street => "123 Imaginary Lane",
           :city => "Some Town",
           :province => "BC"
         )
-        addr.should == nil
+        addr.should be_nil
       end
     end
   end

@@ -17,6 +17,5 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency('mechanize', '~> 2.0.1')
 
-  gem.add_development_dependency('mcmire-context', '>= 0')
-  gem.add_development_dependency('mcmire-matchy', '>= 0')
+  gem.add_development_dependency('rspec', '~> 2.7.0')
 end
