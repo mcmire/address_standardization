@@ -64,7 +64,7 @@ EOT
               # addr[:country_code] = comp['short_name']
               addr[:country] = comp['long_name']
             when comp['types'].include?("administrative_area_level_2")
-              addr[:county] = comp['long_name']
+              addr[:county] = addr[:district] = comp['long_name']
             end
           end
           addr[:street] = street.join(" ").strip

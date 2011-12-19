@@ -6,10 +6,10 @@ module AddressStandardization
     protected
       def get_live_response(address_info)
         address_info = address_info.stringify_keys
-        
+
         is_canada = (address_info["country"].to_s.upcase == "CANADA")
         addr = Address.new(address_info)
-        
+
         url = "http://www.melissadata.com/lookups/#{action(is_canada)}"
         params = []
         attrs_to_fields(is_canada).each do |attr, field|
@@ -18,9 +18,9 @@ module AddressStandardization
         end
         url << "?" + params.join("&")
         url << "&FindAddress=Submit"
-        
+
         #puts "URL: <#{url}>"
-        
+
         attrs = {:country => (is_canada ? "CANADA" : "USA")}
         Mechanize.new do |ua|
           AddressStandardization.debug "[MelissaData] Hitting URL: #{url}"
@@ -54,15 +54,15 @@ module AddressStandardization
           attrs[:city] = city.upcase
           attrs[:province] = attrs[:state] = state.upcase
           attrs[:postalcode] = attrs[:zip] = zip.upcase
-          attrs[:county] = county.upcase
+          attrs[:county] = attrs[:district] = county.upcase
         end
         Address.new(attrs)
       end
-      
+
       def action(is_canada)
         is_canada ? "CanadianAddressVerify.asp" : "AddressVerify.asp"
       end
-      
+
       def attrs_to_fields(is_canada)
         if is_canada
           {"street" => 'Street', "city" => 'city', "province" => 'Province', "postalcode" => 'Postcode'}

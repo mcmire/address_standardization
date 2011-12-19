@@ -2,12 +2,11 @@ module AddressStandardization
   class StandardizationError < StandardError; end
 
   # TODO: Rewrite this class so keys are attr_accessorized
-  # TODO: Alias county to district
   class Address
     class << self
       attr_accessor :valid_keys
     end
-    self.valid_keys = %w(street city state province zip postalcode country county)
+    self.valid_keys = %w(street city state province zip postalcode country county district)
 
     attr_reader :address_info
 
