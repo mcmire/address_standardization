@@ -11,7 +11,6 @@ require 'httparty'
 here = File.expand_path('..', __FILE__)
 
 require "#{here}/address_standardization/ruby_ext"
-require "#{here}/address_standardization/class_level_inheritable_attributes"
 require "#{here}/address_standardization/helpers"
 
 require "#{here}/address_standardization/address"

@@ -1,10 +1,8 @@
 module AddressStandardization
   class AbstractService
-    extend ClassLevelInheritableAttributes
-    cattr_inheritable :canned_response
-    self.canned_response = :success
-
     class << self
+      attr_accessor :canned_response
+
       def standardize_address(address_info)
         if AddressStandardization.test_mode?
           get_canned_response(address_info)
@@ -35,5 +33,7 @@ module AddressStandardization
         AddressStandardization.logger
       end
     end
+
+    self.canned_response = :success
   end
 end
