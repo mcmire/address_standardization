@@ -24,10 +24,11 @@ module AddressStandardization
     alias_method :test_mode?, :test_mode
 
     def logger
-      Logging.logger[self]
+      @_logger ||= Logging.logger(STDOUT)
     end
   end
 
   self.test_mode = false
+
   logger.level = ($DEBUG || ENV['DEBUG']) ? :debug : :info
 end
