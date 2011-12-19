@@ -62,11 +62,11 @@ module AddressStandardization
         county_row = table.search('tr.tdresul01')[4]
         county = county_row.inner_text.match(/County ([A-Za-z ]+)/)[1].strip
         city, state, zip = Helpers.strip_html(city_state_zip_part).split(separator)
-        addr.street = street.upcase
-        addr.city = city.upcase
-        addr.province = state.upcase
-        addr.postal_code = zip.upcase
-        addr.district = county.upcase
+        addr.street = street
+        addr.city = city
+        addr.province = state
+        addr.postal_code = zip
+        addr.district = county
 
         return addr
       end

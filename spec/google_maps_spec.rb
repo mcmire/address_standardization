@@ -13,14 +13,14 @@ describe AddressStandardization::GoogleMaps do
         :city => "Mountain View",
         :state => "CA"
       )
-      addr.should == AddressStandardization::Address.new(
-        "street" => "1600 Amphitheatre Pkwy",
-        "city" => "Mountain View",
-        "county" => "Santa Clara",
-        "state" => "CA",
-        "zip" => "94043",
-        "country" => "United States"
-      )
+      addr.attributes.should == {
+        :street      => "1600 AMPHITHEATRE PKWY",
+        :city        => "MOUNTAIN VIEW",
+        :district    => "SANTA CLARA",
+        :region      => "CA",
+        :postal_code => "94043",
+        :country     => "UNITED STATES"
+      }
     end
 
     it "returns the correct data for a valid Canadian address" do
@@ -30,21 +30,21 @@ describe AddressStandardization::GoogleMaps do
         :city => "Vancouver",
         "province" => "BC"
       )
-      addr.should == AddressStandardization::Address.new(
-        "street" => "55 E Cordova St",
-        "city" => "Vancouver",
-        "district" => "Greater Vancouver Regional District",
-        "province" => "BC",
-        "postal_code" => "V6A 1K3",
-        "country" => "Canada"
-      )
+      addr.attributes.should == {
+        :street      => "55 E CORDOVA ST",
+        :city        => "VANCOUVER",
+        :district    => "GREATER VANCOUVER REGIONAL DISTRICT",
+        :region      => "BC",
+        :postal_code => "V6A 1K3",
+        :country     => "CANADA"
+      }
     end
 
     it "returns nothing for an invalid address" do
       addr = AddressStandardization::GoogleMaps.standardize_address(
         :street => "123 Imaginary Lane",
-        :city => "Some Town",
-        :state => "AK"
+        :city   => "Some Town",
+        :state  => "AK"
       )
       addr.should be_nil
     end
@@ -62,11 +62,14 @@ describe AddressStandardization::GoogleMaps do
         :city => "Some Town",
         :state => "AK"
       )
-      addr.should == AddressStandardization::Address.new(
-        :street => "123 Imaginary Lane",
-        :city => "Some Town",
-        :state => "AK"
-      )
+      addr.attributes.should == {
+        :street      => "123 IMAGINARY LANE",
+        :city        => "SOME TOWN",
+        :district    => nil,
+        :region      => "AK",
+        :postal_code => nil,
+        :country     => nil
+      }
       AddressStandardization::GoogleMaps.canned_response = nil
 
       # block form
@@ -76,11 +79,14 @@ describe AddressStandardization::GoogleMaps do
           :city => "Some Town",
           :state => "AK"
         )
-        addr.should == AddressStandardization::Address.new(
-          :street => "123 Imaginary Lane",
-          :city => "Some Town",
-          :state => "AK"
-        )
+        addr.attributes.should == {
+          :street      => "123 IMAGINARY LANE",
+          :city        => "SOME TOWN",
+          :district    => nil,
+          :region      => "AK",
+          :postal_code => nil,
+          :country     => nil
+        }
       end
     end
 

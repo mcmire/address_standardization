@@ -14,15 +14,17 @@ module AddressStandardization
     }
 
     ATTRIBUTE_DEFS.each do |duck|
-      if Array === duck
-        name, aliases = duck[0], duck[1..-1]
-        attr_accessor name
-        aliases.each do |a|
-          alias_method a, name
-          alias_method "#{a}=", "#{name}="
-        end
-      else
-        attr_accessor duck
+      duck = [duck] unless Array === duck
+      name, aliases = duck[0], duck[1..-1]
+
+      attr_reader name
+      define_method(:"#{name}=") do |value|
+        instance_variable_set("@#{name}", value.to_s.upcase)
+      end
+
+      aliases.each do |a|
+        alias_method a, name
+        alias_method "#{a}=", "#{name}="
       end
     end
 
