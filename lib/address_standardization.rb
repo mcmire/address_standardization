@@ -16,6 +16,8 @@ require "#{here}/address_standardization/melissa_data"
 require "#{here}/address_standardization/google_maps"
 
 module AddressStandardization
+  class StandardizationError < StandardError; end
+
   class << self
     attr_accessor :test_mode
     alias_method :test_mode?, :test_mode
@@ -27,6 +29,7 @@ module AddressStandardization
       puts(*args) if debug_mode?
     end
   end
+
   self.test_mode = false
   self.debug_mode = $DEBUG || ENV["DEBUG"] || false
 end
