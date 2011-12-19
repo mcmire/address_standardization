@@ -21,7 +21,9 @@ module AddressStandardization
 
         #puts "URL: <#{url}>"
 
-        attrs = {:country => (is_canada ? "CANADA" : "USA")}
+        addr = Address.new(
+          :country => (is_canada ? "Canada" : "United States")
+        )
         Mechanize.new do |ua|
           AddressStandardization.debug "[MelissaData] Hitting URL: #{url}"
           results_page = ua.get(url)
@@ -46,17 +48,16 @@ module AddressStandardization
             # ruby 1.8
             separator = "\240\240"
           end
-          county = nil
           matches = results_page.scan(/County \w+/)
           county = matches.first.gsub('County ', '')
           city, state, zip = city_state_zip_part.strip_html.split(separator)
-          attrs[:street] = street.upcase
-          attrs[:city] = city.upcase
-          attrs[:province] = attrs[:state] = state.upcase
-          attrs[:postalcode] = attrs[:zip] = zip.upcase
-          attrs[:county] = attrs[:district] = county.upcase
+          addr.street = street.upcase
+          addr.city = city.upcase
+          addr.province = state.upcase
+          addr.postal_code = zip.upcase
+          addr.district = county.upcase
         end
-        Address.new(attrs)
+        return addr
       end
 
       def action(is_canada)
@@ -65,9 +66,9 @@ module AddressStandardization
 
       def attrs_to_fields(is_canada)
         if is_canada
-          {"street" => 'Street', "city" => 'city', "province" => 'Province', "postalcode" => 'Postcode'}
+          {'street' => 'Street', 'city' => 'city', 'province' => 'Province', 'postalcode' => 'Postcode'}
         else
-          {"street" => 'Address', "city" => 'city', "state" => 'state', "zip" => 'zip'}
+          {'street' => 'Address', 'city' => 'city', 'state' => 'state', 'zip' => 'zip'}
         end
       end
     end

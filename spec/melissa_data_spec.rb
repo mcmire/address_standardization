@@ -8,6 +8,7 @@ describe AddressStandardization::MelissaData do
 
     it "returns the correct data for a valid US address (with implicit country)" do
       addr = AddressStandardization::MelissaData.standardize_address(
+        # test that it works regardless of symbols or strings
         :street => "1 Infinite Loop",
         "city" => "Cupertino",
         :state => "CA"
@@ -16,15 +17,14 @@ describe AddressStandardization::MelissaData do
         "street" => "1 INFINITE LOOP",
         "city" => "CUPERTINO",
         "state" => "CA",
-        "province" => "CA",
         "zip" => "95014-2083",
-        "postalcode" => "95014-2083",
-        "country" => "USA"
+        "country" => "United States"
       )
     end
 
     it "returns the correct data for a valid US address (with explicit country)" do
       addr = AddressStandardization::MelissaData.standardize_address(
+        # test that it works regardless of symbols or strings
         :street => "1 Infinite Loop",
         :city => "Cupertino",
         "state" => "CA",
@@ -34,10 +34,8 @@ describe AddressStandardization::MelissaData do
         "street" => "1 INFINITE LOOP",
         "city" => "CUPERTINO",
         "state" => "CA",
-        "province" => "CA",
         "zip" => "95014-2083",
-        "postalcode" => "95014-2083",
-        "country" => "USA"
+        "country" => "United States"
       )
     end
 
@@ -52,6 +50,7 @@ describe AddressStandardization::MelissaData do
 
     it "returns the correct data for a valid Canadian address" do
       addr = AddressStandardization::MelissaData.standardize_address(
+        # test that it works regardless of symbols or strings
         "street" => "55 Cordova St E #415",
         :city => "Vancouver",
         "province" => "BC",
@@ -62,11 +61,9 @@ describe AddressStandardization::MelissaData do
       addr.should == AddressStandardization::Address.new(
         "street" => "415-55 CORDOVA ST E",
         "city" => "VANCOUVER",
-        "state" => "BC",
         "province" => "BC",
-        "postalcode" => "V6A 0A5",
-        "zip" => "V6A 0A5",
-        "country" => "CANADA"
+        "postal_code" => "V6A 0A5",
+        "country" => "Canada"
       )
     end
 
