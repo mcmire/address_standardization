@@ -8,55 +8,64 @@ module AddressStandardization
         address_info = address_info.stringify_keys
 
         is_canada = (address_info["country"].to_s.upcase == "CANADA")
-        addr = Address.new(address_info)
 
         url = "http://www.melissadata.com/lookups/#{action(is_canada)}"
         params = []
         attrs_to_fields(is_canada).each do |attr, field|
           key, val = field, address_info[attr]
-          params << "#{key}=#{val.url_escape}" if val
+          params << "#{key}=#{Helpers.url_escape(val)}" if val
         end
         url << "?" + params.join("&")
         url << "&FindAddress=Submit"
 
-        #puts "URL: <#{url}>"
+        # puts "URL: <#{url}>"
 
         addr = Address.new(
           :country => (is_canada ? "Canada" : "United States")
         )
-        Mechanize.new do |ua|
-          AddressStandardization.debug "[MelissaData] Hitting URL: #{url}"
-          results_page = ua.get(url)
-          AddressStandardization.debug "[MelissaData] Response body:"
-          AddressStandardization.debug "--------------------------------------------------"
-          AddressStandardization.debug results_page.body
-          AddressStandardization.debug "--------------------------------------------------"
+        ua = Mechanize.new
+        AddressStandardization.debug "[MelissaData] Hitting URL: #{url}"
+        results_page = ua.get(url)
+        AddressStandardization.debug "[MelissaData] Response body:"
+        AddressStandardization.debug "--------------------------------------------------"
+        AddressStandardization.debug results_page.body
+        AddressStandardization.debug "--------------------------------------------------"
 
-          table = results_page.search("table.Tableresultborder")[1]
-          return unless table
-          status_row = table.at("span.Titresultableok")
-          return unless status_row && status_row.inner_text =~ /Address Verified/
-          main_td = table.search("tr:eq(#{is_canada ? 2 : 3})/td:eq(2)")
-          main_td_s = main_td.inner_html
-          main_td_s.encode!("utf-8") if main_td_s.respond_to?(:encode!)
-          street_part, city_state_zip_part = main_td_s.split("<br>")[0..1]
-          street = street_part.strip_html.strip_whitespace
-          if main_td_s.respond_to?(:encode!)
-            # ruby 1.9
-            separator = city_state_zip_part.include?("&#160;&#160;") ? "&#160;&#160;" : "  "
-          else
-            # ruby 1.8
-            separator = "\240\240"
-          end
-          matches = results_page.scan(/County \w+/)
-          county = matches.first.gsub('County ', '')
-          city, state, zip = city_state_zip_part.strip_html.split(separator)
-          addr.street = street.upcase
-          addr.city = city.upcase
-          addr.province = state.upcase
-          addr.postal_code = zip.upcase
-          addr.district = county.upcase
+        table = results_page.at("table.Tableresultborder")
+        unless table
+          warn "Couldn't find table"
+          return nil
         end
+        status_row = table.at("div.Titresultableok")
+        unless status_row
+          warn "Couldn't find status_row"
+          return nil
+        end
+        unless status_row.inner_text =~ /Address Verified/
+          warn "Address not verified"
+          return nil
+        end
+        main_td = table.search("tr:eq(#{is_canada ? 2 : 3})/td:eq(2)")
+        main_td_s = main_td.inner_html
+        main_td_s.encode!("utf-8") if main_td_s.respond_to?(:encode!)
+        street_part, city_state_zip_part = main_td_s.split("<br>")[0..1]
+        street = Helpers.strip_whitespace(Helpers.strip_html(street_part))
+        if main_td_s.respond_to?(:encode!)
+          # ruby 1.9
+          separator = city_state_zip_part.include?("&#160;&#160;") ? "&#160;&#160;" : "  "
+        else
+          # ruby 1.8
+          separator = "\240\240"
+        end
+        county_row = table.search('tr.tdresul01')[4]
+        county = county_row.inner_text.match(/County ([A-Za-z ]+)/)[1].strip
+        city, state, zip = Helpers.strip_html(city_state_zip_part).split(separator)
+        addr.street = street.upcase
+        addr.city = city.upcase
+        addr.province = state.upcase
+        addr.postal_code = zip.upcase
+        addr.district = county.upcase
+
         return addr
       end
 

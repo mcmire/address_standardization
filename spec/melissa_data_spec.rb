@@ -16,6 +16,7 @@ describe AddressStandardization::MelissaData do
       addr.should == AddressStandardization::Address.new(
         "street" => "1 INFINITE LOOP",
         "city" => "CUPERTINO",
+        "district" => "SANTA CLARA",
         "state" => "CA",
         "zip" => "95014-2083",
         "country" => "United States"
@@ -33,6 +34,7 @@ describe AddressStandardization::MelissaData do
       addr.should == AddressStandardization::Address.new(
         "street" => "1 INFINITE LOOP",
         "city" => "CUPERTINO",
+        "district" => "SANTA CLARA",
         "state" => "CA",
         "zip" => "95014-2083",
         "country" => "United States"
@@ -78,6 +80,10 @@ describe AddressStandardization::MelissaData do
   end
 
   context 'in test mode' do
+    before :each do
+      AddressStandardization.test_mode = true
+    end
+
     it "returns the correct data for a valid address" do
       AddressStandardization::MelissaData.canned_response = :success
       addr = AddressStandardization::MelissaData.standardize_address(
