@@ -13,7 +13,7 @@ This is not a library to *geocode* addresses or locations. In other words, you
 won't get world coordinates back for a location. If you need this information,
 then there are other libraries that will do this for you, such as
 [graticule](http://github.com/collectiveidea/graticule) or
-[GeoKit](http://github.com/andre/geokit-gem).
+[GeoKit](https://github.com/imajes/geokit).
 
 ## How do I install it?
 
@@ -136,8 +136,8 @@ As mentioned, you can also do P.O. boxes:
 * Add your changes.
 * Write some tests! Tests are written in RSpec, so `rspec FILE` to run a
   single test, and `rake test` to run all of the tests.
-* If you're feeling generous, fork the project and submit a pull request. I'll
-  take a look at it when I can.
+* Want me to merge your changes? Fork the project and submit a pull
+  request. I'll take a look at it when I can.
 
 ## Contributors
 
@@ -146,7 +146,7 @@ As mentioned, you can also do P.O. boxes:
 
 ## Support
 
-If you need help, you can get in touch with me here on Github, or via:
+If you need help, you can get in touch with me here:
 
   * **Twitter**: [@mcmire](http://twitter.com/mcmire)
   * **Email**: <elliot.winkler@gmail.com>
